@@ -11,6 +11,7 @@ stopBtn.addEventListener('click', onStop);
 function onStart() {
   if (!startedChange) {
     timerId = setInterval(getRandomHexColor, DELAY_TIME);
+    startBtn.classList.add('onStart');
     startedChange = true;
   }
   return;
@@ -18,6 +19,8 @@ function onStart() {
 
 function onStop() {
   clearInterval(timerId);
+  startBtn.classList.remove('onStart');
+  startedChange = false;
 }
 
 function getRandomHexColor() {

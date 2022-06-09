@@ -28,8 +28,13 @@ function onSubmit(event) {
   const timerId = setInterval(() => {
     flagOn();
     createPromise(counter + 1, delayEL)
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
+      .then(({ position, delay }) => {
+        console.log(`Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        console.log(`Rejected promise ${position} in ${delay}ms`);
+      });
+
     flag = false;
     counter += 1;
     if (counter === amountEl) {
@@ -62,4 +67,12 @@ function flagOn() {
 }
 
 
-// Найти способ увеличивать каждый следующий promise + step
+// function createPromise(position, delay) {
+//   const shouldResolve = Math.random() > 0.3;
+//   if (shouldResolve) {
+//     // Fulfill
+//   } else {
+//     // Reject
+//   }
+// }
+

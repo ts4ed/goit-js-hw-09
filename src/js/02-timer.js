@@ -30,6 +30,7 @@ const options = {
     timerOff = selectedDates[0].getTime();
   },
 };
+
 function starts() {
   return timer.start();
 }
