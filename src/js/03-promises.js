@@ -27,13 +27,7 @@ function onSubmit(event) {
 
   const timerId = setInterval(() => {
     flagOn();
-    createPromise(counter + 1, delayEL)
-      .then(({ position, delay }) => {
-        console.log(`Fulfilled promise ${position} in ${delay}ms`);
-      })
-      .catch(({ position, delay }) => {
-        console.log(`Rejected promise ${position} in ${delay}ms`);
-      });
+    createPromise(counter + 1, delayEL);
 
     flag = false;
     counter += 1;
@@ -48,16 +42,14 @@ function onSubmit(event) {
 }
 
 function createPromise(position, delay) {
-  return new Promise(() => {
-    const shouldResolve = Math.random() > 0.3;
-    setTimeout(() => {
-      if (shouldResolve) {
-        Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
-      } else {
-        Notify.failure(`Rejected promise ${position} in ${delay}ms`);
-      }
-    }, delay);
-  });
+  const shouldResolve = Math.random() > 0.3;
+  setTimeout(() => {
+    if (shouldResolve) {
+      Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
+    } else {
+      Notify.failure(`Rejected promise ${position} in ${delay}ms`);
+    }
+  }, delay);
 }
 
 function flagOn() {
@@ -65,14 +57,3 @@ function flagOn() {
     delayEL = stepEl + delayEL;
   }
 }
-
-
-// function createPromise(position, delay) {
-//   const shouldResolve = Math.random() > 0.3;
-//   if (shouldResolve) {
-//     // Fulfill
-//   } else {
-//     // Reject
-//   }
-// }
-
