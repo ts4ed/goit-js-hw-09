@@ -10,8 +10,7 @@ refs.delay.addEventListener('input', onInput);
 refs.step.addEventListener('input', onInput);
 refs.amount.addEventListener('input', onInput);
 refs.form.addEventListener('submit', onSubmit);
-let flag = true;
-let counter = 0;
+
 let delayEL = 0;
 let stepEl = 0;
 let amountEl = 0;
@@ -25,35 +24,27 @@ function onInput() {
 function onSubmit(event) {
   event.preventDefault();
 
-  const timerId = setInterval(() => {
-    flagOn();
-    createPromise(counter + 1, delayEL);
-
-    flag = false;
-    counter += 1;
-    if (counter === amountEl) {
-      clearInterval(timerId);
-      counter = 0;
-      flag = true;
-      delayEL = 0;
-      return;
-    }
-  });
+  for (let i = 1; i <= amountEl; i += 1) {
+    createPromise(i, delayEL)
+      .then(({ position, delay }) => {
+        Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
+      })
+      .catch(({ position, delay }) => {
+        Notify.failure(`Rejected promise ${position} in ${delay}ms`);
+      });
+    delayEL += stepEl;
+  }
 }
 
 function createPromise(position, delay) {
-  const shouldResolve = Math.random() > 0.3;
-  setTimeout(() => {
-    if (shouldResolve) {
-      Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
-    } else {
-      Notify.failure(`Rejected promise ${position} in ${delay}ms`);
-    }
-  }, delay);
-}
-
-function flagOn() {
-  if (flag === false) {
-    delayEL = stepEl + delayEL;
-  }
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const shouldResolve = Math.random() > 0.3;
+      if (shouldResolve) {
+        resolve({ position, delay });
+      } else {
+        reject({ position, delay });
+      }
+    }, delay);
+  });
 }
